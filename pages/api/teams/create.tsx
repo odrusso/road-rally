@@ -11,5 +11,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!doesTeamExist) {
         // create a team
     }
-    return res.status(200)
+    return res.status(200).end()
 }

@@ -10,15 +10,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const doesTeamExist = true
     if (!doesTeamExist) {
-        return res.status(400)
+        return res.status(400).end()
     }
 
     // TODO: check if location has already been done by the team
     const locationAlreadyDoneByTeam = false
     if (locationAlreadyDoneByTeam) {
-        return res.status(400)
+        return res.status(400).end()
     }
 
     // TODO: actually add an entry to the DB
-    return res.status(200)
+    return res.status(200).end()
 }
