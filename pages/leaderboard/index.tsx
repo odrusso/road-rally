@@ -1,7 +1,8 @@
 import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import {useState} from "react";
+import useSWR from "swr";
 
-type Leader = {
+export type Leader = {
     teamName: string,
     currentScore: number
     // Last updated time?
@@ -12,23 +13,22 @@ type LeadboardProps = {
     highlightedTeam?: string
 }
 
+// @ts-ignore
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
+
 export default function Leaderboard(props: LeadboardProps) {
 
-
-    const getLeaders = (): Leader[] => {
-        // TODO: Have this fetch from an API fr
-        const mockLeaders = [
-            {teamName: 'big-mac', currentScore: 4},
-            {teamName: 'qtr-pndr', currentScore: 3},
-        ]
-        return mockLeaders
-    }
-
-    const [leaders, setLeaders] = useState<Leader[]>(getLeaders())
+    const leaderboardData = useSWR('/api/leaderboard', fetcher, { refreshInterval: 1000 });
 
     const refreshLeaders = () => {
-        setLeaders(getLeaders())
+        leaderboardData.mutate()
     }
+
+    if (leaderboardData === undefined || !leaderboardData.data) {
+        return <>loading...</>
+    }
+
+    console.log(leaderboardData.data)
 
     return (
         <>
@@ -41,11 +41,13 @@ export default function Leaderboard(props: LeadboardProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {leaders
+                        {leaderboardData.data
                             .sort((a, b) => b.currentScore - a.currentScore) // sorts in desc order
                             .map((leader) => (
                                 <TableRow key={leader.teamName}>
-                                    {leader.teamName !== props.highlightedTeam ? (<TableCell>{leader.teamName}</TableCell>) : (<TableCell><strong>{leader.teamName}</strong></TableCell>) }
+                                    {leader.teamName !== props.highlightedTeam ? (
+                                        <TableCell>{leader.teamName}</TableCell>) : (
+                                        <TableCell><strong>{leader.teamName}</strong></TableCell>)}
                                     <TableCell>{leader.currentScore}</TableCell>
                                 </TableRow>
                             ))}
