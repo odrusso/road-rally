@@ -9,6 +9,8 @@ export type TeamDeletionRequest = {
 const deleteTeam = async (teamName: string): Promise<boolean> => {
     console.log(`Creating team ${teamName}`)
     const creation = await query(`DELETE FROM teams WHERE "teamName" = $1`, [teamName])
+    const checkins = await query(`DELETE FROM checkins WHERE "teamName" = $1`, [teamName])
+
     return creation.rowCount === 1
 }
 

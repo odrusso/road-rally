@@ -1,9 +1,9 @@
-import { Client } from 'pg';
+import { Client, QueryResult } from 'pg';
 
 export async function query(
     q: string,
-    values: (string | number)[] | string | number = []
-) {
+    values: (string | number | Date)[] = []
+): Promise<QueryResult<any>> {
     console.log(`[QUERY] ${q}`)
     try {
         const db = new Client({
