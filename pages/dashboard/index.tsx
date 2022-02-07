@@ -78,6 +78,9 @@ function CheckInDialog({onClose, open, teamName}) {
             alert(`You have now checked in at ${arrayByClosest[0].name}!`)
             fetch("/api/teams/checkin", {
                 method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     teamName: teamName,
                     location: arrayByClosest[0].name
@@ -124,6 +127,9 @@ export default function Dashboard() {
         // delete team
         fetch("/api/teams/delete", {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(
                 {teamName: teamName} as TeamDeletionRequest
             )
@@ -137,11 +143,11 @@ export default function Dashboard() {
             <Button variant={"contained"} sx={{marginBottom: 2}} onClick={() => {
                 setCheckInOpen(true)
             }}>Check in</Button>
-            <Button variant={"outlined"} sx={{marginBottom: 2}} onClick={leaveTeam}>Leave team</Button>
-            <Button variant={"outlined"} color={"error"} sx={{marginBottom: 2}} onClick={deleteTeam}>Delete
-                team</Button>
             <Leaderboard highlightedTeam={teamName}/>
 
+            <Button variant={"outlined"} sx={{marginTop: 2, marginBottom: 2}} onClick={leaveTeam}>Leave team</Button>
+            <Button variant={"outlined"} color={"error"} sx={{marginBottom: 2}} onClick={deleteTeam}>Delete
+                team</Button>
             <CheckInDialog onClose={() => setCheckInOpen(false)} open={checkInOpen} teamName={teamName}/>
         </>
     )
