@@ -3,6 +3,8 @@ import {Button, Dialog, DialogTitle, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import Leaderboard from "../leaderboard";
 import {Box} from "@mui/system";
+import {TeamDeletionRequest} from "../api/teams/delete";
+import { TeamCheckInRequest } from "../api/teams/checkin";
 
 //This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
 const distanceBetweenCoordinates = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
@@ -23,7 +25,7 @@ const distanceBetweenCoordinates = (lat1: number, lon1: number, lat2: number, lo
     return d;
 }
 
-function CheckInDialog({onClose, open}) {
+function CheckInDialog({onClose, open, teamName}) {
     const [currentLocation, setCurrentLocation] = useState<GeolocationPosition | null>(null)
     const [bestGuessLocation, setBestGuessLocation] = useState(null)
 
@@ -74,7 +76,17 @@ function CheckInDialog({onClose, open}) {
             onClose()
         } else {
             alert(`You have now checked in at ${arrayByClosest[0].name}!`)
-            // TODO: Make an API call here
+            fetch("/api/teams/checkin", {
+                method: "POST",
+                body: JSON.stringify({
+                    teamName: teamName,
+                    location: arrayByClosest[0].name
+                } as TeamCheckInRequest)
+            }).then((res) => {
+                if (res.status != 200) {
+                    alert("You have already checked in here!")
+                }
+            })
             onClose()
         }
     }, [currentLocation])
@@ -108,6 +120,17 @@ export default function Dashboard() {
         router.push("/")
     }
 
+    const deleteTeam = () => {
+        // delete team
+        fetch("/api/teams/delete", {
+            method: "POST",
+            body: JSON.stringify(
+                {teamName: teamName} as TeamDeletionRequest
+            )
+        })
+        leaveTeam()
+    }
+
     return (
         <>
             <Typography sx={{marginBottom: 2}}>Current team: {teamName}</Typography>
@@ -115,9 +138,11 @@ export default function Dashboard() {
                 setCheckInOpen(true)
             }}>Check in</Button>
             <Button variant={"outlined"} sx={{marginBottom: 2}} onClick={leaveTeam}>Leave team</Button>
+            <Button variant={"outlined"} color={"error"} sx={{marginBottom: 2}} onClick={deleteTeam}>Delete
+                team</Button>
             <Leaderboard highlightedTeam={teamName}/>
 
-            <CheckInDialog onClose={() => setCheckInOpen(false)} open={checkInOpen}/>
+            <CheckInDialog onClose={() => setCheckInOpen(false)} open={checkInOpen} teamName={teamName}/>
         </>
     )
 }

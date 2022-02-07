@@ -2,6 +2,7 @@ import {Box} from "@mui/system";
 import {Button, TextField, Typography} from "@mui/material";
 import {FormEvent, useState} from "react";
 import {useRouter} from "next/router";
+import {TeamCreationRequest} from "../api/teams/create";
 
 export default function Join() {
 
@@ -9,15 +10,22 @@ export default function Join() {
 
     const router = useRouter()
 
+    const createTeam = (teamName: string) => {
+        fetch("/api/teams/create", {
+            method: "POST",
+            body: JSON.stringify({
+                teamName: teamName
+            } as TeamCreationRequest)
+        })
+    }
+
     const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
         setFormSubmitting(true)
         formEvent.preventDefault()
-        const teamName = new FormData(formEvent.currentTarget).get("teamName")
-        console.log(teamName)
-        // TODO: I guess we need an API call in here
-        // TODO: Also set a cookie to the team-name
+        const teamName = new FormData(formEvent.currentTarget).get("teamName") as string
+        createTeam(teamName)
         setFormSubmitting(false)
-        localStorage.setItem("teamName", teamName as unknown as string)
+        localStorage.setItem("teamName", teamName)
         router.push("/dashboard")
     }
 
