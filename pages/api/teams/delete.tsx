@@ -17,7 +17,6 @@ const deleteTeam = async (teamName: string): Promise<boolean> => {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const {teamName} = req.body as TeamDeletionRequest
-    // TODO: delete the team from the db
     console.log(`Handling team deletion request for ${teamName}`)
     if (!teamName) {
         res.status(400)
