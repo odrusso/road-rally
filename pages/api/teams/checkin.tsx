@@ -15,7 +15,8 @@ export const findDoesHasTeamVisistedLocation = async (teamName: string, location
 
 export const addLocation = async (teamName: string, location: string): Promise<boolean> => {
     console.log(`Checking in team ${teamName} at location ${location}`)
-    const results = await query(`INSERT INTO checkins ("teamName", "location", "time") VALUES ($1, $2, $3)`, [teamName, location, new Date()])
+    const currentTimeUTC = new Date().getTime();
+    const results = await query(`INSERT INTO checkins ("teamName", "location", "time") VALUES ($1, $2, $3)`, [teamName, location, currentTimeUTC])
     return results.rowCount > 0
 }
 

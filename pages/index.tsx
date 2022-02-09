@@ -55,7 +55,6 @@ export default function Home() {
                         Only one device per team should join at a time
                     </Typography>
                 </>
-
             )}
 
             {teamName !== null && (
