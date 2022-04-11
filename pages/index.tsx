@@ -11,7 +11,7 @@ const countdownRenderer = ({days, hours, minutes, seconds}) => {
 export default function Home() {
 
     const [teamName, setTeamName] = useState<string | null>(null)
-    const [startOfEventTime] = useState(Date.parse('12 Apr 2022 07:45:00'))
+    const [startOfEventTime] = useState(Date.parse('16 Apr 2022 09:30:00'))
     const [joinEnabled, setJoinEnabled] = useState<Boolean>(false)
 
     useEffect(() => {
