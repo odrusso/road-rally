@@ -10,6 +10,7 @@ A little Python 3.10 script that will pump out a visualsation of the event.
 
 ## TODO
 - Create a bounding box dynamically from the points in locations.csv
+- Create start-and-end times dynamically from checkins.csv
 - Get all teams dynamically from checkins.csv
 - Create team colors more intelligently
 - Performance improvement, currently is O(n**2), but of a pain
