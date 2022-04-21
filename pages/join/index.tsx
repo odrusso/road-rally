@@ -2,7 +2,6 @@ import {Box} from "@mui/system";
 import {Button, TextField, Typography} from "@mui/material";
 import {FormEvent, useState} from "react";
 import {useRouter} from "next/router";
-import {TeamCreationRequest} from "../api/teams/create";
 
 export default function Join() {
 
