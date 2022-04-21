@@ -2,20 +2,15 @@
 A silly leaderboard style webapp that lets you run a road rally, with checkins using HTML5 geo-api, and a realtime-ish scoreboard.
 
 ## Running locally
-
+Create a file `.env.local` based on `.env.example`
 ```bash
+npm i
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## TODO
-- Codify DB schema
-- Add a few tables to the DB schema
-  - Event (id, name, code, start_time, admin_id)
-  - User (id, email, password_hash)
-- Update existing tables with event_id as park of the primary key
-
 - Add 'create event' page
 - Add 'create event' POST API  
   
