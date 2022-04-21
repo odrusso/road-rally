@@ -3,7 +3,7 @@ import {Button, TextField, Typography} from "@mui/material";
 import {FormEvent, useState} from "react";
 import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
-import {EventCreationRequest, EventCreationRequestResponse} from "../../api/event/create";
+import {EventCreationRequest, EventCreationRequestResponse} from "../api/event/create";
 import {Moment} from "moment";
 import {useRouter} from "next/router";
 
