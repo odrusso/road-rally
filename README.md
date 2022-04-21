@@ -11,18 +11,14 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## TODO
-- Add 'create event' page
-- Add 'create event' POST API  
-  
-- Add 'admin login' and 'admin dashboard' pages
-- Add 'verify login' POST API  
-  
-- Add auth  
+- Add admin password to event management page
+- Add 'change start time' to event management page
 
-- Add 'edit locations' page
+- Add locations into database
+- Modify current check-in logic to care about event code
+
+- Add 'edit locations' to manage page
 - Add 'edit locations' PUT API
-- Add 'edit event' page
-- Add 'edit event' POST API
 
 - Require entry of event code to join event, no default
 - Extend existing APIs to require event name

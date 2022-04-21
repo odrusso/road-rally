@@ -3,7 +3,7 @@ import {Button, TextField, Typography} from "@mui/material";
 import {FormEvent, useState} from "react";
 import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
-import {EventCreationRequest, EventCreationRequestResponse} from "../api/event/create";
+import {EventCreationRequest, EventCreationRequestResponse} from "../../api/event/create";
 import {Moment} from "moment";
 
 export default function CreateEvent() {
@@ -12,13 +12,10 @@ export default function CreateEvent() {
     const [startTime, setStartTime] = useState<Moment | null>(null)
     const [errorText, setErrorText] = useState<string | null>(null)
 
-    // TODO: We want to get an actual admin ID here
-    const [adminId, setAdminId] = useState(0)
-
-    const createEvent = async (eventName: string): Promise<EventCreationRequestResponse> => {
+    const createEvent = async (eventName: string, adminCode: string): Promise<EventCreationRequestResponse> => {
         const body: EventCreationRequest = {
             eventName: eventName,
-            adminId: adminId,
+            adminCode: adminCode,
             startTime: startTime.unix() * 1000,
         }
 
@@ -45,13 +42,20 @@ export default function CreateEvent() {
             return
         }
 
-        if (!startTime) {
-            setErrorText("Start Time cannot be empty, but can be changed later")
+        if (!startTime || startTime.isBefore()) {
+            setErrorText("Start Time cannot be empty, must be in the future, and can be changed later")
             setFormSubmitting(false)
             return
         }
 
-        const eventCode = await createEvent(eventName);
+        const adminCode = new FormData(formEvent.currentTarget).get("adminCode") as string
+        if (!adminCode || adminCode === "" || adminCode.length < 4) {
+            setErrorText("Password must be at least 4 characters")
+            setFormSubmitting(false)
+            return
+        }
+
+        const eventCode = await createEvent(eventName, adminCode);
 
         // TODO something with this eventCode
         alert(eventCode.eventCode)
@@ -91,6 +95,19 @@ export default function CreateEvent() {
                     renderInput={(params) => <TextField {...params} />}
                     disabled={formSubmitting}
                 />
+
+                <br />
+                <br />
+
+                <TextField
+                    name={"adminCode"}
+                    required
+                    fullWidth
+                    id={"adminCode"}
+                    label={"New Password"}
+                    disabled={formSubmitting}
+                >
+                </TextField>
 
                 <Button fullWidth type={'submit'} variant={'contained'} sx={{marginTop: 2}}
                         disabled={formSubmitting}>Create</Button>

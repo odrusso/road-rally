@@ -1,11 +1,10 @@
 import {Button, Typography} from "@mui/material";
-import { useRouter } from "next/dist/client/router";
 import Link from 'next/link'
 import {useEffect, useState} from "react";
 import Countdown from 'react-countdown';
 
-const countdownRenderer = ({days, hours, minutes, seconds}) => {
-    return <span>{days}d {hours}h {minutes}m {seconds}s</span>;
+export const countdownRenderer = ({days, hours, minutes, seconds, completed}) => {
+    return <span>{completed ? '-' : ''}{days}d {hours}h {minutes}m {seconds}s</span>;
 };
 
 export default function Home() {
@@ -42,7 +41,7 @@ export default function Home() {
 
             {teamName === null && (
                 <>
-                    <Link href={'/join'}>
+                    <Link href={'/join-team'}>
                         <Button fullWidth
                                 variant="contained"
                                 sx={{mt: 3, mb: 1}}
