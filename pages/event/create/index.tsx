@@ -5,9 +5,11 @@ import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
 import {EventCreationRequest, EventCreationRequestResponse} from "../../api/event/create";
 import {Moment} from "moment";
+import {useRouter} from "next/router";
 
 export default function CreateEvent() {
 
+    const router = useRouter();
     const [formSubmitting, setFormSubmitting] = useState(false)
     const [startTime, setStartTime] = useState<Moment | null>(null)
     const [errorText, setErrorText] = useState<string | null>(null)
@@ -57,10 +59,7 @@ export default function CreateEvent() {
 
         const eventCode = await createEvent(eventName, adminCode);
 
-        // TODO something with this eventCode
-        alert(eventCode.eventCode)
-
-        setFormSubmitting(false)
+        await router.push(`/event/manage?eventCode=${eventCode.eventCode}`)
     }
 
     return (
