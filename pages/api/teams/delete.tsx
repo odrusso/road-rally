@@ -6,7 +6,6 @@ export type TeamDeletionRequest = {
 }
 
 export const findDoesTeamIdExist = async (teamId: number): Promise<boolean> => {
-    // We need to check for event here
     console.log(`Finding team ${teamId}`)
     const results = await query(`SELECT * FROM teams WHERE id = $1`, [teamId])
     return results.rowCount > 0

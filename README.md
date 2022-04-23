@@ -14,8 +14,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Add admin password to event management page
 - Add 'change start time' to event management page
 
-- Add locations into database
-- Modify current check-in logic to care about event code
+- Make checkins page get locations dynamically
+- Change checkins API to take location ID
 
 - Add 'edit locations' to manage page
 - Add 'edit locations' PUT API

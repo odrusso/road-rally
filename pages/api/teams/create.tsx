@@ -10,10 +10,11 @@ export type TeamCreationRequestResponse = {
     teamId: number
 }
 
-export const getEventIdFromCode = async (eventCode: string): Promise<number> => {
+export const getEventIdFromCode = async (eventCode: string): Promise<number | null> => {
     console.log(`Finding event ${eventCode}`)
 
     const results = await query(`SELECT id FROM event WHERE code = $1`, [eventCode])
+    if (results.rows.length === 0)  return null
     return results.rows[0].id
 }
 
@@ -21,9 +22,7 @@ export const findTeamIdFromNameAndEvent = async (teamName: string, eventId: numb
     console.log(`Finding team ${teamName}`)
 
     const results = await query(`SELECT teams.id as id FROM teams WHERE name = $1 AND event_id = $2`, [teamName, eventId])
-
     if (results.rows.length === 0) return null
-
     return results.rows[0].id
 }
 
@@ -41,6 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     if (!teamName || !eventCode) return res.status(400).end()
 
     const eventId = await getEventIdFromCode(eventCode)
+    if (!eventId) return res.status(400).end()
 
     let teamId = await findTeamIdFromNameAndEvent(teamName, eventId)
 
