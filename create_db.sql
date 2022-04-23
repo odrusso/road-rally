@@ -14,7 +14,7 @@ CREATE TABLE event (
 
 CREATE TABLE teams (
     "id" serial NOT NULL,
-    "teamName" varchar NOT NULL,
+    "name" varchar NOT NULL,
     "event_id" int4,
     CONSTRAINT "teams_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES event ("id"),
     PRIMARY KEY ("id")

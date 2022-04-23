@@ -33,11 +33,11 @@ function ManageEvent() {
                     </strong>
                 </Typography>
 
-                <Link href={`/event/dashboard?eventCode=${info.code}`}>
+                <Link href={`/event/landing?eventCode=${info.code}`}>
                     <Button fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}>
-                        Dashboard
+                        Event Landing Page
                     </Button>
                 </Link>
 

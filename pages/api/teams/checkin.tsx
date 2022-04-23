@@ -1,40 +1,46 @@
 import {NextApiRequest, NextApiResponse} from "next"
 import {query} from "../../../lib/db"
-import {findDoesTeamExist} from "./create"
+import {findDoesTeamIdExist} from "./delete";
 
 export type TeamCheckInRequest = {
-    teamName: string;
+    teamId: number;
     location: string;
 }
 
-export const findDoesHasTeamVisistedLocation = async (teamName: string, location: string): Promise<boolean> => {
-    console.log(`Finding team ${teamName} at location ${location}`)
-    const results = await query(`SELECT * FROM checkins WHERE "teamName" = $1 AND "location" = $2`, [teamName, location])
+export const findDoesHasTeamVisitedLocation = async (teamId: number, location: string): Promise<boolean> => {
+    console.log(`Finding team ${teamId} at location ${location}`)
+
+    // TODO This needs to be location ID
+    const results = await query(`SELECT * FROM checkins WHERE "team_id" = $1 AND "location" = $2`, [teamId, location])
     return results.rowCount > 0
 }
 
-export const addLocation = async (teamName: string, location: string): Promise<boolean> => {
-    console.log(`Checking in team ${teamName} at location ${location}`)
+export const addLocation = async (teamId: number, location: string): Promise<boolean> => {
+    console.log(`Checking in team ${teamId} at location ${location}`)
     const currentTimeUTC = new Date().getTime();
-    const results = await query(`INSERT INTO checkins ("teamName", "location", "time") VALUES ($1, $2, $3)`, [teamName, location, currentTimeUTC])
+
+    // TODO This needs to be location ID
+    const results = await query(`INSERT INTO checkins ("team_id", "location", "time") VALUES ($1, $2, $3)`, [teamId, location, currentTimeUTC])
     return results.rowCount > 0
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const {teamName, location} = req.body as TeamCheckInRequest
+    const {teamId, location} = req.body as TeamCheckInRequest
 
-    const doesTeamExist = findDoesTeamExist(teamName)
+    if (!teamId || !location) return res.status(400).end()
+
+    const doesTeamExist = findDoesTeamIdExist(teamId)
     if (!doesTeamExist) {
         return res.status(400).end()
     }
 
     // TODO: check if location has already been done by the team
-    const locationAlreadyDoneByTeam = await findDoesHasTeamVisistedLocation(teamName, location)
+    const locationAlreadyDoneByTeam = await findDoesHasTeamVisitedLocation(teamId, location)
 
     if (locationAlreadyDoneByTeam) {
         return res.status(400).end()
     }
 
-    await addLocation(teamName, location)
+    await addLocation(teamId, location)
     return res.status(200).end()
 }

@@ -52,7 +52,7 @@ export function EventInfoProvider({children}) {
                 <Button fullWidth
                         variant="contained"
                         sx={{mt: 3, mb: 2}}>
-                    Back to homepahe
+                    Back to homepage
                 </Button>
             </Link>
         </>

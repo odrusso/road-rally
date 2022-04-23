@@ -5,7 +5,7 @@ export default function Home() {
     return (
         <>
 
-            <Link href={"/event/join"}>
+            <Link href={"/event/join-event"}>
                 <Button fullWidth
                         variant="contained"
                         sx={{mt: 3, mb: 2}}>

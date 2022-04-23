@@ -30,7 +30,7 @@ export default function JoinEvent() {
             return
         }
 
-        await router.push(`/event/dashboard?eventCode=${eventCode}`)
+        await router.push(`/event/landing?eventCode=${eventCode}`)
     }
 
     return (
