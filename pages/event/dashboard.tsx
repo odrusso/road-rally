@@ -1,7 +1,7 @@
 import {useRouter} from "next/router";
 import {Button, Dialog, DialogTitle, Typography} from "@mui/material";
 import {useContext, useEffect, useState} from "react";
-import Leaderboard from "../leaderboard";
+import Leaderboard from "../../lib/leaderboard";
 import {Box} from "@mui/system";
 import {TeamDeletionRequest} from "../api/teams/delete";
 import {TeamCheckInRequest} from "../api/teams/checkin";
@@ -148,11 +148,14 @@ function EventDashboard() {
 
     return (
         <>
-            <Typography sx={{marginBottom: 2}}>Current team: {team.name}</Typography>
+            <Typography component={"h1"} variant={"h5"} sx={{marginBottom: 4}}>
+                {info.name}
+            </Typography>
+            <Typography component={"h1"} variant={"h5"} sx={{marginBottom: 2}}>Current team: <strong>{team.name}</strong></Typography>
             <Button variant={"contained"} sx={{marginBottom: 2}} onClick={() => {
                 setCheckInOpen(true)
             }}>Check in</Button>
-            <Leaderboard highlightedTeam={team.name}/>
+            <Leaderboard highlightedTeam={team.name} eventCode={info.code}/>
 
             <Button variant={"outlined"} sx={{marginTop: 2, marginBottom: 2}} onClick={leaveTeam}>Leave team</Button>
             <Button variant={"outlined"} color={"error"} sx={{marginBottom: 2}} onClick={deleteTeam}>Delete

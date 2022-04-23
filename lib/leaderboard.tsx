@@ -1,6 +1,6 @@
-import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {useState} from "react";
-import useSWR from "swr";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {useEffect, useState} from "react";
+import {LeaderboardRequest} from "../pages/api/leaderboard";
 
 export type Leader = {
     teamName: string,
@@ -10,8 +10,10 @@ export type Leader = {
 }
 
 type LeadboardProps = {
-    highlightedTeam?: string
+    eventCode: string,
+    highlightedTeam?: string,
 }
+
 export const millisInOneHour = 1000 * 60 * 60
 export const millisInOneMinute = 1000 * 60
 export const millisInOneSecond = 1000
@@ -38,17 +40,37 @@ const timeDeltaString = (previousTime: number, currentTime: number = new Date().
 
 export default function Leaderboard(props: LeadboardProps) {
 
-    const forceUpdate: () => void = useState()[1].bind(null, {})
+    const [leaderboardData, setLeaderboardData] = useState<Leader[] | null>(null)
 
-    // @ts-ignore
-    const fetcher = (...args) => fetch(...args).then((res) => {
-        forceUpdate();
-        return res.json()
-    })
+    const updateLeaderboard = async () => {
+        const response = await fetch("/api/leaderboard", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                eventCode: props.eventCode,
+            } as LeaderboardRequest)
+        })
 
-    const leaderboardData = useSWR('/api/leaderboard', fetcher, {refreshInterval: 1000});
+        const json = await response.json() as Leader[]
+        setLeaderboardData(json)
+    }
 
-    if (leaderboardData === undefined || !leaderboardData.data) {
+    useEffect(() => {
+        // Immediately fetch and update the leaderboard
+        updateLeaderboard()
+
+        // Refresh the leaderboard every second
+        const interval = setInterval(() => {
+            updateLeaderboard()
+        }, 1000);
+
+        // Stop this interval when component is unmounted
+        return () => clearInterval(interval);
+    }, [])
+
+    if (!leaderboardData) {
         return <>loading...</>
     }
 
@@ -64,7 +86,7 @@ export default function Leaderboard(props: LeadboardProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {leaderboardData.data
+                        {leaderboardData
                             .sort((a, b) => b.currentScore - a.currentScore) // sorts in desc order
                             .map((leader: Leader) => (
                                 <TableRow key={leader.teamName}>

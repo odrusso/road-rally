@@ -17,6 +17,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Make checkins page get locations dynamically
 - Change checkins API to take location ID
 
+- Make leaderboard show all teams
+- Maybe show something different on landing page before event start?
+
 - Add 'edit locations' to manage page
 - Add 'edit locations' PUT API
 

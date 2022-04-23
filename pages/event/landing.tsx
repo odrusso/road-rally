@@ -6,6 +6,7 @@ import {countdownRenderer} from "../../lib/countdownRenderer";
 import {EventInfoContext, EventInfoProvider} from "../../lib/EventInfoContext";
 import {useTeam} from "../../lib/useTeam";
 import {useRouter} from "next/router";
+import Leaderboard from "../../lib/leaderboard";
 
 function EventLanding() {
 
@@ -30,13 +31,7 @@ function EventLanding() {
                 </strong>
             </Typography>
 
-            <Link href={"/leaderboard"}>
-                <Button fullWidth
-                        variant="contained"
-                        sx={{mt: 3, mb: 2}}>
-                    Leaderboard
-                </Button>
-            </Link>
+            <Leaderboard eventCode={info.code}/>
 
             {!team && (
                 <>
