@@ -13,6 +13,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## TODO
 - Add admin password to event management page
 - Add 'change start time' to event management page
+- Refactor event manage page into several files
 
 - Make checkins page get locations dynamically
 - Change checkins API to take location ID
@@ -20,10 +21,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Make leaderboard show all teams
 - Maybe show something different on landing page before event start?
 
+- Use EventID in more places, stop relying on EventCode for API calls
+- Use contexts betterer, don't refetch all the time
+
 - Add 'edit locations' to manage page
 - Add 'edit locations' PUT API
-
-- Require entry of event code to join event, no default
-- Extend existing APIs to require event name
 
 - Remove all mention of 'maccas run'

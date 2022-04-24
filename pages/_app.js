@@ -29,7 +29,9 @@ function MyApp({Component, pageProps}) {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: '100vh'
+                        paddingTop: '100px',
+                        paddingBottom: '100px',
+                        minHeight: '100vh',
                     }}
                 >
                     <Component {...pageProps} />

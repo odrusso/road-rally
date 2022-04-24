@@ -19,7 +19,11 @@ export async function fetchEventInfo(eventCode: string): Promise<{ status: numbe
     return {status: 200, info}
 }
 
-export const EventInfoContext = createContext(null);
+export type EventInfoContextValue = EventInfoResponse & {
+    reloadInfo: () => void
+}
+
+export const EventInfoContext = createContext<EventInfoContextValue | null>(null);
 
 export function EventInfoProvider({children}) {
     const router = useRouter()
@@ -62,5 +66,10 @@ export function EventInfoProvider({children}) {
         return <>loading...</>
     }
 
-    return <EventInfoContext.Provider value={info}>{children}</EventInfoContext.Provider>
+    const reloadInfo = () => {
+        setInfo(null)
+        loadEventInfo()
+    }
+
+    return <EventInfoContext.Provider value={{...info, reloadInfo}}>{children}</EventInfoContext.Provider>
 }

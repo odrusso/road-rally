@@ -64,7 +64,7 @@ export default function Leaderboard(props: LeadboardProps) {
         // Refresh the leaderboard every second
         const interval = setInterval(() => {
             updateLeaderboard()
-        }, 1000);
+        }, 5000);
 
         // Stop this interval when component is unmounted
         return () => clearInterval(interval);
