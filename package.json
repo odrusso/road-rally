@@ -7,6 +7,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@date-io/moment": "^2.13.1",
     "@emotion/react": "^11.7.1",
